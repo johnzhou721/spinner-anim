@@ -6,7 +6,7 @@ FRAMES_DIR = frames
 FRAME_PREFIX = frame_
 FRAME_FORMAT = $(FRAMES_DIR)/$(FRAME_PREFIX)%03d.png
 GIF = output.gif
-DPI = 150
+DPI = 300
 STAMP = $(FRAMES_DIR)/frames-stamp
 
 # Default target
@@ -30,7 +30,7 @@ $(STAMP): $(PDF) | $(FRAMES_DIR)
 
 # Build GIF after all frames are generated
 $(GIF): $(STAMP)
-	convert -delay 2 -loop 0 $(FRAMES_DIR)/$(FRAME_PREFIX)*.png $(GIF)
+	convert -delay 3 -loop 0 $(FRAMES_DIR)/$(FRAME_PREFIX)*.png $(GIF)
 
 # Clean up generated files
 clean:
