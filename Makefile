@@ -6,7 +6,7 @@ FRAMES_DIR = frames
 FRAME_PREFIX = frame_
 FRAME_FORMAT = $(FRAMES_DIR)/$(FRAME_PREFIX)%03d.png
 GIF = output.gif
-DPI = 300
+DPI = 50
 STAMP = $(FRAMES_DIR)/frames-stamp
 
 # Default target
@@ -25,12 +25,12 @@ $(FRAMES_DIR):
 $(STAMP): $(PDF) | $(FRAMES_DIR)
 	# Remove old frames first
 	rm -f $(FRAMES_DIR)/$(FRAME_PREFIX)*.png
-	convert -density $(DPI) $(PDF) -background white -alpha remove -alpha off $(FRAME_FORMAT)
+	convert -resize 32x32 $(PDF) -background white -alpha remove -alpha off $(FRAME_FORMAT)
 	touch $(STAMP)
 
 # Build GIF after all frames are generated
 $(GIF): $(STAMP)
-	convert -delay 3 -loop 0 $(FRAMES_DIR)/$(FRAME_PREFIX)*.png $(GIF)
+	convert -delay 2 -loop 0 $(FRAMES_DIR)/$(FRAME_PREFIX)*.png $(GIF)
 
 # Clean up generated files
 clean:
