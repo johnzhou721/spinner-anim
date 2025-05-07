@@ -1,9 +1,11 @@
 \documentclass{article}
 \usepackage{tikz}
+\usepackage{xcolor}
 \usepackage{forloop}
 \usepackage[active,tightpage]{preview}
 \PreviewEnvironment[{[]}]{tikzpicture}
 
+\definecolor{msblue}{RGB}{0,101,179}
 
 \newcounter{fra}
 
@@ -22,7 +24,7 @@
     % 2^2 controls closeness to the tangents
     % 5*\time+50 makes it go from 50 degree for center to 400 degree for center within the amount of time -- calculate based on the time domain
     % sorry for all the magic numbers
-    \draw [blue,line width=2.5pt,domain={5*\time+50-(10 + sqrt(((40/36)^2)*(\time - 36)^2 + 2^2))}:{5*\time+50+(10 + sqrt(((40/36)^2)*(\time - 36)^2 + 2^2))}, line cap=round] plot ({0.5*sin(\x)}, {0.5*cos(\x)});
+    \draw [color=msblue,line width=2.5pt,domain={5*\time+50-(10 + sqrt(((40/36)^2)*(\time - 36)^2 + 2^2))}:{5*\time+50+(10 + sqrt(((40/36)^2)*(\time - 36)^2 + 2^2))}, line cap=round] plot ({0.5*sin(\x)}, {0.5*cos(\x)});
     \path (-.55,-.55) -- (-.55,.55) -- (.55,.55) -- (.55, -.55) -- cycle;
 \end{tikzpicture}%
 }
