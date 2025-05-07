@@ -14,7 +14,15 @@
 \par\noindent%
 \def\time{(\thefra/4)}%
 \begin{tikzpicture}
-    \draw [blue,line width=2.5pt,domain={5*\time+50-(42.5/(36*36)*(\time-36)*(\time-36)+7.5)}:{5*\time+50+(42.5/(36*36)*(\time-36)*(\time-36)+7.5)}, line cap=round] plot ({sin(\x)}, {cos(\x)});
+	% a quadratic-based one:
+    %\draw [blue,line width=2.5pt,domain={5*\time+50-(42.5/(36*36)*(\time-36)*(\time-36)+7.5)}:{5*\time+50+(42.5/(36*36)*(\time-36)*(\time-36)+7.5)}, line cap=round] plot ({sin(\x)}, {cos(\x)});
+    % hyperbolic length
+    % 40 is 50-10, tangent to v-shape formed by (0,50) (36,10) and (72,50)
+    % 36 is the middle value, 1/2 of \time
+    % 2^2 controls closeness to the tangents
+    % 5*\time+50 makes it go from 50 degree for center to 400 degree for center within the amount of time -- calculate based on the time domain
+    % sorry for all the magic numbers
+    \draw [blue,line width=2.5pt,domain={5*\time+50-(10 + sqrt(((40/36)^2)*(\time - 36)^2 + 2^2))}:{5*\time+50+(10 + sqrt(((40/36)^2)*(\time - 36)^2 + 2^2))}, line cap=round] plot ({sin(\x)}, {cos(\x)});
     \path (-1.05,-1.05) -- (-1.05,1.05) -- (1.05,1.05) -- (1.05, -1.05) -- cycle;
 \end{tikzpicture}%
 }
