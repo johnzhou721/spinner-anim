@@ -1,0 +1,23 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage{forloop}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment[{[]}]{tikzpicture}
+
+
+\newcounter{fra}
+
+
+\begin{document}
+
+\forloop{fra}{1}{\value{fra} < 288}{%
+\par\noindent%
+\def\time{(\thefra/4)}%
+\begin{tikzpicture}
+    \draw [blue,line width=2.5pt,domain={5*\time+50-(42.5/(36*36)*(\time-36)*(\time-36)+7.5)}:{5*\time+50+(42.5/(36*36)*(\time-36)*(\time-36)+7.5)}, line cap=round] plot ({sin(\x)}, {cos(\x)});
+    \path (-1.05,-1.05) -- (-1.05,1.05) -- (1.05,1.05) -- (1.05, -1.05) -- cycle;
+\end{tikzpicture}%
+}
+
+\end{document}
+
