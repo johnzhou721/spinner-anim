@@ -28,13 +28,13 @@ $(FRAMES_DIR):
 $(STAMP): $(PDF) | $(FRAMES_DIR)
 	# Remove old frames first
 	rm -f $(FRAMES_DIR)/$(FRAME_PREFIX)*.png
-	convert -resize 64x64 $(PDF) $(FRAME_FORMAT)
+	convert -resize 64x64 +antialias $(PDF) $(FRAME_FORMAT)
 	touch $(STAMP)
 
 $(STAMP2X): $(PDF) | $(FRAMES_DIR)
 	# Remove old frames first
 	rm -f $(FRAMES_DIR)/$(FRAME_PREFIX_2X)*.png
-	convert -resize 128x128 $(PDF) $(FRAME_FORMAT_2X)
+	convert -resize 128x128 +antialias $(PDF) $(FRAME_FORMAT_2X)
 	touch $(STAMP2X)
 
 # Build GIF after all frames are generated
