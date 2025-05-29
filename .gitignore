@@ -2,4 +2,5 @@ frames
 *.aux
 *.log
 *.pdf
-*.gif
+output*.gif
+palette*.png

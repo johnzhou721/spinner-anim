@@ -28,26 +28,30 @@ $(FRAMES_DIR):
 $(STAMP): $(PDF) | $(FRAMES_DIR)
 	# Remove old frames first
 	rm -f $(FRAMES_DIR)/$(FRAME_PREFIX)*.png
-	convert -resize 32x32 $(PDF) -background white -alpha remove -alpha off $(FRAME_FORMAT)
+	convert -resize 32x32 $(PDF) $(FRAME_FORMAT)
 	touch $(STAMP)
 
 $(STAMP2X): $(PDF) | $(FRAMES_DIR)
 	# Remove old frames first
 	rm -f $(FRAMES_DIR)/$(FRAME_PREFIX_2X)*.png
-	convert -resize 64x64 $(PDF) -background white -alpha remove -alpha off $(FRAME_FORMAT_2X)
+	convert -resize 64x64 $(PDF) $(FRAME_FORMAT_2X)
 	touch $(STAMP2X)
 
 # Build GIF after all frames are generated
 $(GIF): $(STAMP)
-	convert -delay 2 -loop 0 $(FRAMES_DIR)/$(FRAME_PREFIX)*.png $(GIF)
+	ffmpeg -framerate 50 -pattern_type glob -i "$(FRAMES_DIR)/$(FRAME_PREFIX)*.png" -vf palettegen=reserve_transparent=1 palette.png
+	ffmpeg -framerate 50 -pattern_type glob -i "$(FRAMES_DIR)/$(FRAME_PREFIX)*.png" -i palette.png -lavfi "paletteuse" -gifflags -offsetting -loop 0 $(GIF)
 
 $(GIF2X): $(STAMP2X)
-	convert -delay 2 -loop 0 $(FRAMES_DIR)/$(FRAME_PREFIX_2X)*.png $(GIF2X)
+	ffmpeg -framerate 50 -pattern_type glob -i "$(FRAMES_DIR)/$(FRAME_PREFIX_2X)*.png" -vf palettegen=reserve_transparent=1 palette2x.png
+	ffmpeg -framerate 50 -pattern_type glob -i "$(FRAMES_DIR)/$(FRAME_PREFIX_2X)*.png" -i palette2x.png -lavfi "paletteuse" -gifflags -offsetting -loop 0 $(GIF2X)
 
 # Clean up generated files
 clean:
 	rm -f *.aux *.log *.pdf $(GIF) $(GIF2X)
 	rm -rf $(FRAMES_DIR)
+	rm -f palette.png palette2x.png
+
 
 .PHONY: all clean
 
