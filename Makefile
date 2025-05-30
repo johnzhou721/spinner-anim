@@ -16,6 +16,10 @@ STAMP2X = $(FRAMES_DIR)/frames-stamp_2x
 # Default target
 all: $(GIF) $(GIF2X)
 
+.PHONY: postprocess
+postprocess: all
+	python postprocess.py
+
 # Compile LaTeX source to PDF
 $(PDF): $(TEX)
 	pdflatex -interaction=nonstopmode $<
@@ -50,6 +54,7 @@ $(GIF2X): $(STAMP2X)
 clean:
 	rm -f *.aux *.log *.pdf $(GIF) $(GIF2X)
 	rm -rf $(FRAMES_DIR)
+	rm -f *_anti.gif
 	rm -f palette.png palette2x.png
 
 
