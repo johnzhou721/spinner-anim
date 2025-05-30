@@ -1,5 +1,13 @@
 from PIL import Image, ImageSequence, ImageFilter
 
+def smooth(image, scale=2):
+    # Step 1: Scale down by 50%
+    width, height = image.size
+    image_small = image.resize((width // scale, height // scale), resample=Image.BICUBIC)
+
+    # Step 2: Scale up by 200%
+    return image_small.resize((width, height), resample=Image.LANCZOS)
+
 def process_gif(input_path, output_path, rgb_background):
     src = Image.open(input_path)
     size = src.size
@@ -31,11 +39,9 @@ def process_gif(input_path, output_path, rgb_background):
         bg = Image.new("RGBA", size, rgb_background + (255,))
         comp = Image.alpha_composite(bg, frame)
 
-        if "2x" in input_path:
-            # 3) Apply a smoothing filter
-            sm = comp.filter(ImageFilter.SMOOTH_MORE).filter(ImageFilter.SMOOTH_MORE).filter(ImageFilter.SMOOTH_MORE)
-        else:
-            sm = comp.filter(ImageFilter.SMOOTH_MORE)
+        sm = smooth(comp)
+        sm = sm.filter(ImageFilter.GaussianBlur(radius=0.5))
+
 
         # 4) Quantize back to P mode with adaptive palette
         pal = sm.convert("P", palette=Image.ADAPTIVE, colors=255)
@@ -59,6 +65,6 @@ def process_gif(input_path, output_path, rgb_background):
     )
 
 # Usage
-rgb_background = (236, 236, 236)
+# 240 240 240
+rgb_background = (255, 0, 255)
 process_gif("output.gif", "output_anti.gif", rgb_background)
-process_gif("output2x.gif", "output2x_anti.gif", rgb_background)

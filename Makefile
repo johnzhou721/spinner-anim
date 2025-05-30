@@ -13,8 +13,8 @@ STAMP = $(FRAMES_DIR)/frames-stamp
 STAMP2X = $(FRAMES_DIR)/frames-stamp_2x
 
 
-# Default target
-all: $(GIF) $(GIF2X)
+# Default target -- DISABLE 2X
+all: $(GIF)
 
 .PHONY: postprocess
 postprocess: all
@@ -32,13 +32,13 @@ $(FRAMES_DIR):
 $(STAMP): $(PDF) | $(FRAMES_DIR)
 	# Remove old frames first
 	rm -f $(FRAMES_DIR)/$(FRAME_PREFIX)*.png
-	convert -background transparent -gravity center -scale 56x56 -extent 64x64 $(PDF) $(FRAME_FORMAT)
+	convert -background transparent -gravity center -scale 60x60 -extent 64x64  +antialias $(PDF) $(FRAME_FORMAT)
 	touch $(STAMP)
 
 $(STAMP2X): $(PDF) | $(FRAMES_DIR)
 	# Remove old frames first
 	rm -f $(FRAMES_DIR)/$(FRAME_PREFIX_2X)*.png
-	convert -background transparent -gravity center -scale 112x112 -extent 128x128 $(PDF) $(FRAME_FORMAT_2X)
+	convert -background transparent -gravity center -scale 120x120 -extent 128x128 +antialias $(PDF) $(FRAME_FORMAT_2X)
 	touch $(STAMP2X)
 
 # Build GIF after all frames are generated
