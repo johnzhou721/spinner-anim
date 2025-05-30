@@ -31,8 +31,11 @@ def process_gif(input_path, output_path, rgb_background):
         bg = Image.new("RGBA", size, rgb_background + (255,))
         comp = Image.alpha_composite(bg, frame)
 
-        # 3) Apply a smoothing filter
-        sm = comp.filter(ImageFilter.SMOOTH)
+        if "2x" in input_path:
+            # 3) Apply a smoothing filter
+            sm = comp.filter(ImageFilter.SMOOTH_MORE).filter(ImageFilter.SMOOTH_MORE).filter(ImageFilter.SMOOTH_MORE)
+        else:
+            sm = comp.filter(ImageFilter.SMOOTH_MORE)
 
         # 4) Quantize back to P mode with adaptive palette
         pal = sm.convert("P", palette=Image.ADAPTIVE, colors=255)
